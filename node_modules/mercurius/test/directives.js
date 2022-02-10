@@ -85,11 +85,10 @@ function lengthDirectiveTransformer (schema) {
   return mapSchema(schema, {
     [MapperKind.FIELD]: (fieldConfig) => {
       const directives = getDirectives(schema, fieldConfig)
-      for (const directive of directives) {
-        if (directive.name === 'length') {
-          wrapType(fieldConfig, directive.args)
-          return fieldConfig
-        }
+      const directiveArgumentMap = directives.length
+      if (directiveArgumentMap) {
+        wrapType(fieldConfig, directiveArgumentMap)
+        return fieldConfig
       }
     }
   })
@@ -100,18 +99,16 @@ function upperDirectiveTransformer (schema) {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
       const directives = getDirectives(schema, fieldConfig)
-      for (const directive of directives) {
-        if (directive.name === 'upper') {
-          const { resolve = defaultFieldResolver } = fieldConfig
-          fieldConfig.resolve = async function (source, args, context, info) {
-            const result = await resolve(source, args, context, info)
-            if (typeof result === 'string') {
-              return result.toUpperCase()
-            }
-            return result
+      if (directives.upper) {
+        const { resolve = defaultFieldResolver } = fieldConfig
+        fieldConfig.resolve = async function (source, args, context, info) {
+          const result = await resolve(source, args, context, info)
+          if (typeof result === 'string') {
+            return result.toUpperCase()
           }
-          return fieldConfig
+          return result
         }
+        return fieldConfig
       }
     }
   })

@@ -19,6 +19,23 @@ app.register(mercurius, {
 
 // register auth policy
 
+app.register(mercuriusAuth, {
+	authContext(context) {
+		return { identity: context.reply.request.headers['x-user'] };
+	},
+	async applyPolicy(authDirectiveAST, parent, args, context, info) {
+		const token = context.auth.identity;
+		try {
+			const claim = jwt.verify(token, 'mysecrete');
+		} catch (error) {
+			throw new Error(`An error occurred. Try again!`);
+		}
+
+		return true;
+	},
+	authDirective: 'auth'
+});
+
 // create server
 const start = async () => {
 	try {
