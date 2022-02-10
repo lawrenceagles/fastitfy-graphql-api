@@ -1,0 +1,22 @@
+{
+	"name": "fastify-graphql-api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "node --es-module-specifier-resolution=node ./src/index.js",
+		"dev": "nodemon --es-module-specifier-resolution=node ./src/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"fastify": "^3.27.1",
+		"fastify-plugin": "^3.0.1",
+		"jsonwebtoken": "^8.5.1",
+		"mercurius": "^9.3.1",
+		"mercurius-auth": "^2.0.0",
+		"nodemon": "^2.0.15"
+	}
+}
